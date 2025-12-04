@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wedding Live Photo Wall</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#0f1724;color:#f8fafc;display:flex;flex-direction:column;height:100vh;}
+    header{padding:12px;text-align:center;background:#061426;}
+    h1{margin:0;font-size:24px;}
+    .qr-section{padding:12px;text-align:center;}
+    .iframe-wrap{flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .iframe-wrap iframe{width:100%;height:100%;border:0;}
+    .small{font-size:14px;color:#9aa4b2;}
+    .btn{padding:8px 12px;border-radius:6px;border:none;background:#2563eb;color:#f8fafc;cursor:pointer;font-size:14px;margin-top:6px;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Wedding Live Photo Wall</h1>
+  <div class="small">Guests can scan the QR code below to upload photos directly.</div>
+</header>
+
+<div class="qr-section">
+  <label class="small">Google Photos Album Link:</label><br>
+  <input type="text" id="shared-link" style="width:80%;padding:6px;border-radius:6px;border:1px solid #9aa4b2;background:transparent;color:#f8fafc" placeholder="Paste shared album link here" />
+  <br>
+  <button class="btn" id="gen-qr">Generate QR & Display Album</button>
+  <div style="margin-top:10px;" id="qrbox"></div>
+</div>
+
+<div class="iframe-wrap">
+  <iframe id="album-frame" src="" allowfullscreen></iframe>
+</div>
+
+<script>
+  document.getElementById('gen-qr').onclick = ()=>{
+    const url = document.getElementById('shared-link').value.trim();
+    if(!url){alert('Please paste your shared Google Photos album link.'); return;}
+
+    // Generate QR code using Google Charts API
+    const qrUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl='+encodeURIComponent(url);
+    const qrbox = document.getElementById('qrbox');
+    qrbox.innerHTML = '<img src="'+qrUrl+'" alt="QR code" style="width:150px;height:150px;object-fit:contain">';
+
+    // Try to embed the album
+    const iframe = document.getElementById('album-frame');
+    iframe.src = url;
+  };
+</script>
+
+</body>
+</html>
